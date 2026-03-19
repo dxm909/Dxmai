@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and moderation status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "userNumber": { "type": "integer", "description": "Sequential user number (e.g., 1, 2, 3)" },
+        "status": { "type": "string", "enum": ["active", "banned", "temp_banned"] },
+        "warningCount": { "type": "integer" },
+        "bannedUntil": { "type": "integer", "description": "Timestamp when temporary ban expires" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "preferredTone": { "type": "string", "enum": ["formal", "informal", "friendly", "professional"], "description": "Preferred AI response tone" },
+        "expertiseAreas": { "type": "array", "items": { "type": "string" }, "description": "Specified areas of AI expertise" },
+        "lastInteraction": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Global application configuration",
+      "type": "object",
+      "properties": {
+        "openRouterKey": { "type": "string" },
+        "backupOpenRouterKey": { "type": "string" },
+        "isMaintenance": { "type": "boolean" },
+        "isShutdown": { "type": "boolean" },
+        "statusMessage": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/settings/appConfig": {
+      "schema": "AppSettings",
+      "description": "Global app configuration"
+    },
+    "/app_control/status": {
+      "schema": {
+        "title": "AppControl",
+        "type": "object",
+        "properties": {
+          "isActive": { "type": "boolean" },
+          "isUpdating": { "type": "boolean" },
+          "updateMessage": { "type": "string" },
+          "version": { "type": "string" }
+        }
+      },
+      "description": "Real-time app control status"
+    }
+  }
+}
